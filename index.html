@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="paper">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Sudoku Ultimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-left">
+      <div class="logo">SUDOKU</div>
+      <div class="tagline">Ultimate Edition</div>
+    </div>
+    <div class="header-center">
+      <div class="timer-display" id="timer">00:00</div>
+      <div class="timer-label">TEMPS</div>
+    </div>
+    <div class="header-right">
+      <div class="theme-row">
+        <span class="theme-micro-label">Thème</span>
+        <div class="theme-pills">
+          <div class="theme-pill active" data-t="paper" onclick="setTheme('paper')" title="Journal"></div>
+          <div class="theme-pill" data-t="night"  onclick="setTheme('night')"  title="Nuit"></div>
+          <div class="theme-pill" data-t="sepia"  onclick="setTheme('sepia')"  title="Sépia"></div>
+          <div class="theme-pill" data-t="slate"  onclick="setTheme('slate')"  title="Ardoise"></div>
+          <div class="theme-pill" data-t="neon"   onclick="setTheme('neon')"   title="Néon"></div>
+          <div class="theme-pill" data-t="cb"     onclick="setTheme('cb')"     title="Daltonien"></div>
+        </div>
+      </div>
+      <div class="diff-display" id="diff-label">FACILE</div>
+      <div class="diff-label-sub">NIVEAU</div>
+    </div>
+  </header>
+
+  <div class="divider-thick"></div>
+
+  <main class="main-layout">
+
+    <!-- LEFT PANEL -->
+    <aside class="left-panel">
+      <section class="panel-section">
+        <div class="panel-title">NIVEAU</div>
+        <div class="diff-btns">
+          <button class="diff-btn active" data-d="easy"   onclick="setDiff('easy')">Facile</button>
+          <button class="diff-btn" data-d="medium" onclick="setDiff('medium')">Moyen</button>
+          <button class="diff-btn" data-d="hard"   onclick="setDiff('hard')">Difficile</button>
+        </div>
+      </section>
+      <div class="divider"></div>
+      <section class="panel-section">
+        <div class="panel-title">MODE</div>
+        <div class="diff-btns">
+          <button class="diff-btn active" data-m="normal" onclick="setGameMode('normal')">Normal</button>
+          <button class="diff-btn" data-m="zen"    onclick="setGameMode('zen')">🧘 Zen</button>
+          <button class="diff-btn" data-m="blitz"  onclick="setGameMode('blitz')">⚡ Blitz</button>
+          <button class="diff-btn" data-m="learn"  onclick="setGameMode('learn')">📖 Apprentissage</button>
+        </div>
+      </section>
+      <div class="divider"></div>
+      <section class="panel-section">
+        <div class="panel-title">ACTIONS</div>
+        <button class="action-btn primary" onclick="newGame()">Nouvelle partie</button>
+        <button class="action-btn" onclick="saveGame()">💾 Sauvegarder</button>
+        <button class="action-btn" onclick="loadGame()">📂 Reprendre</button>
+        <button class="action-btn" onclick="toggleNotes()">✎ Notes <span class="badge" id="notes-badge">OFF</span></button>
+        <button class="action-btn" onclick="autoNotes()">✨ Auto-notes</button>
+        <button class="action-btn" onclick="undoMove()">↩ Annuler</button>
+        <button class="action-btn" onclick="clearCell()">⌫ Effacer</button>
+      </section>
+      <div class="divider"></div>
+      <section class="panel-section">
+        <div class="panel-title">AIDE</div>
+        <button class="action-btn help-btn" onclick="useHint()">💡 Indice <span class="badge" id="hints-left">3</span></button>
+        <button class="action-btn" onclick="highlightTechnique()">🔍 Technique</button>
+        <button class="action-btn" onclick="validatePuzzle()">✓ Vérifier</button>
+        <button class="action-btn" onclick="openImport()">📥 Importer</button>
+        <button class="action-btn" onclick="shareGrid()">🔗 Partager</button>
+        <button class="action-btn danger-btn" onclick="revealSolution()">👁 Révéler</button>
+      </section>
+      <div class="divider"></div>
+      <section class="panel-section">
+        <div class="panel-title">ERREURS</div>
+        <div class="error-dots" id="error-dots"></div>
+        <div class="error-count" id="error-count">0 / 3</div>
+      </section>
+      <div class="divider"></div>
+      <section class="panel-section">
+        <div class="panel-title">SON</div>
+        <button class="action-btn" onclick="toggleSound()">🔊 Son <span class="badge" id="sound-badge">ON</span></button>
+        <button class="action-btn" onclick="toggleMusic()">🎵 Ambiance <span class="badge" id="music-badge">OFF</span></button>
+      </section>
+    </aside>
+
+    <!-- CENTER GRID -->
+    <div class="grid-area">
+      <div class="blitz-bar-wrap" id="blitz-bar-wrap" style="display:none">
+        <div class="blitz-bar-fill" id="blitz-bar"></div>
+      </div>
+      <div class="technique-banner" id="technique-banner" style="display:none">
+        <span id="technique-text"></span>
+        <button onclick="clearTechHighlight()">✕</button>
+      </div>
+      <div class="sudoku-grid" id="grid"></div>
+      <div class="numpad" id="numpad"></div>
+      <div class="analysis-wrap" id="analysis-wrap" style="display:none">
+        <div class="panel-title" style="margin-bottom:.75rem">ANALYSE POST-PARTIE</div>
+        <div class="analysis-grid" id="analysis-grid"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel">
+      <section class="panel-section">
+        <div class="panel-title">PROGRESSION</div>
+        <div class="progress-ring-wrap">
+          <svg class="progress-ring" viewBox="0 0 80 80">
+            <circle class="pr-bg" cx="40" cy="40" r="34"/>
+            <circle class="pr-fill" id="pr-fill" cx="40" cy="40" r="34"
+              stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+          </svg>
+          <div class="progress-pct" id="progress-pct">0%</div>
+        </div>
+      </section>
+      <div class="divider"></div>
+      <section class="panel-section">
+        <div class="panel-title">STATISTIQUES</div>
+        <div class="stat-row"><span>Parties</span><span id="st-played">0</span></div>
+        <div class="stat-row"><span>Victoires</span><span id="st-wins">0</span></div>
+        <div class="stat-row"><span>Série</span><span id="st-streak">0</span></div>
+        <div class="stat-row"><span>Taux</span><span id="st-rate">—</span></div>
+      </section>
+      <div class="divider"></div>
+      <section class="panel-section">
+        <div class="panel-title">TOP 5</div>
+        <div style="font-size:10px;color:var(--ink3);margin-bottom:3px">Facile</div>
+        <div class="best-times" id="top5-easy-list"></div>
+        <div style="font-size:10px;color:var(--ink3);margin:6px 0 3px">Moyen</div>
+        <div class="best-times" id="top5-medium-list"></div>
+        <div style="font-size:10px;color:var(--ink3);margin:6px 0 3px">Difficile</div>
+        <div class="best-times" id="top5-hard-list"></div>
+      </section>
+      <div class="divider"></div>
+      <section class="panel-section">
+        <div class="panel-title">HISTORIQUE DES TEMPS</div>
+        <canvas id="progress-chart" height="90" style="width:100%"></canvas>
+      </section>
+      <div class="divider"></div>
+      <section class="panel-section">
+        <div class="panel-title">RACCOURCIS</div>
+        <div class="shortcut-row"><kbd>1–9</kbd><span>Chiffre</span></div>
+        <div class="shortcut-row"><kbd>N</kbd><span>Notes</span></div>
+        <div class="shortcut-row"><kbd>A</kbd><span>Auto-notes</span></div>
+        <div class="shortcut-row"><kbd>Z</kbd><span>Annuler</span></div>
+        <div class="shortcut-row"><kbd>H</kbd><span>Indice</span></div>
+        <div class="shortcut-row"><kbd>T</kbd><span>Technique</span></div>
+        <div class="shortcut-row"><kbd>Del</kbd><span>Effacer</span></div>
+        <div class="shortcut-row"><kbd>↑↓←→</kbd><span>Naviguer</span></div>
+      </section>
+      <div class="divider"></div>
+      <section class="panel-section">
+        <div class="panel-title">RÈGLES</div>
+        <p class="rules-text">Remplis la grille 9×9 de façon que chaque ligne, colonne et carré 3×3 contienne les chiffres de 1 à 9 sans répétition.</p>
+      </section>
+    </aside>
+
+  </main>
+</div>
+
+<!-- WIN MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-emoji" id="modal-emoji">🎉</div>
+    <div class="modal-title" id="modal-title">Bravo !</div>
+    <div class="modal-subtitle" id="modal-subtitle">Puzzle résolu</div>
+    <div class="modal-stats" id="modal-stats"></div>
+    <button class="action-btn primary" style="width:100%;margin-top:1rem" onclick="newGame();closeModal()">Nouvelle partie</button>
+    <button class="action-btn" style="width:100%;margin-top:.5rem" onclick="closeModal()">Fermer</button>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title" style="font-size:22px;margin-bottom:.5rem">📥 Importer une grille</div>
+    <div class="modal-subtitle">81 chiffres consécutifs, 0 pour les cases vides</div>
+    <textarea id="import-input" placeholder="530070000600195000098000060800060003400803001700020006060000280000419005000080079" style="width:100%;height:80px;margin:1rem 0;font-family:'DM Mono',monospace;font-size:12px;padding:8px;border:1px solid var(--paper3);border-radius:5px;background:var(--paper2);color:var(--ink);resize:none;outline:none"></textarea>
+    <div style="display:flex;gap:8px">
+      <button class="action-btn primary" style="flex:1" onclick="doImport()">Importer</button>
+      <button class="action-btn" style="flex:1" onclick="closeImport()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="modal-overlay" id="share-modal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title" style="font-size:22px;margin-bottom:.5rem">🔗 Partager</div>
+    <div class="modal-subtitle">Code de la grille — envoie-le à un ami</div>
+    <div id="share-code" style="font-family:'DM Mono',monospace;font-size:12px;background:var(--paper2);border:1px solid var(--paper3);border-radius:5px;padding:10px;margin:1rem 0;word-break:break-all;color:var(--ink)"></div>
+    <button class="action-btn primary" style="width:100%" onclick="copyShareCode()">📋 Copier le code</button>
+    <button class="action-btn" style="width:100%;margin-top:.5rem" onclick="closeShare()">Fermer</button>
+  </div>
+</div>
+
+<canvas id="confetti-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:200"></canvas>
+<script src="app.js"></script>
+</body>
+</html>
