@@ -372,6 +372,8 @@ function toggleNotes(){
 function updateNotesBtn(){
   const b=document.getElementById('notes-badge');
   b.textContent=G.notesMode?'ON':'OFF'; b.className=G.notesMode?'badge on':'badge';
+  const mob=document.getElementById('mob-notes-btn');
+  if(mob) mob.classList.toggle('active',G.notesMode);
 }
 
 // ── HINTS ────────────────────────────────────────────────────

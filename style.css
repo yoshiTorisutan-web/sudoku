@@ -244,13 +244,128 @@ kbd{font-family:'DM Mono',monospace;font-size:9px;background:var(--paper2);borde
 .modal-stat-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink)}
 .modal-stat-label{font-size:9px;letter-spacing:1.5px;color:var(--ink3);text-transform:uppercase;margin-top:2px}
 
+/* ══ MODAL SCROLL ════════════════════════════════════════════ */
+.modal{max-height:90vh;overflow-y:auto}
+
 /* ══ RESPONSIVE ═════════════════════════════════════════════ */
+.mobile-toolbar{display:none}
+
+/* --- Tablet (≤920px) --- */
 @media(max-width:920px){
   .main-layout{grid-template-columns:1fr}
-  .left-panel{flex-direction:row;flex-wrap:wrap;gap:1rem}
+  .left-panel{flex-direction:row;flex-wrap:wrap;gap:.75rem}
   .left-panel .divider{display:none}
   .right-panel{display:none}
   .panel-section{min-width:140px;flex:1}
+  /* Grille visible en premier sur mobile */
+  .grid-area{order:-1}
 }
+
+/* --- Mobile (≤640px) --- */
+@media(max-width:640px){
+  .page{padding:0 .75rem 4.75rem}
+
+  /* Header : 2 rangées */
+  .site-header{
+    grid-template-columns:1fr auto;
+    grid-template-rows:auto auto;
+    padding:.6rem 0 .4rem;
+    gap:.3rem .5rem;
+    align-items:center;
+  }
+  .header-left{grid-column:1;grid-row:1}
+  .header-center{grid-column:2;grid-row:1;text-align:right}
+  .header-right{
+    grid-column:1/-1;grid-row:2;
+    display:flex;align-items:center;justify-content:space-between;
+    text-align:left;
+  }
+  .logo{font-size:clamp(20px,5.5vw,36px);letter-spacing:5px}
+  .tagline{font-size:8px;letter-spacing:2px}
+  .timer-display{font-size:clamp(18px,5vw,28px);letter-spacing:2px}
+  .timer-label{font-size:8px;letter-spacing:2px}
+  .theme-row{flex-direction:row;align-items:center;gap:4px;margin-bottom:0}
+  .theme-micro-label{display:none}
+  .theme-pill{width:13px;height:13px}
+  .diff-display{font-size:clamp(12px,3.5vw,17px)}
+  .diff-label-sub{margin-top:0;font-size:7px;letter-spacing:2px}
+
+  /* Panneau gauche */
+  .left-panel{gap:.6rem}
+  .panel-section{min-width:130px}
+
+  /* Boutons plus faciles à toucher */
+  .action-btn{min-height:42px;padding:9px 12px;font-size:13px}
+  .diff-btn{min-height:38px;padding:8px 12px;font-size:13px}
+
+  /* Numpad & grille */
+  .num-btn{font-size:clamp(17px,5.5vw,26px)}
+  .num-count{font-size:8px}
+  .cell-num{font-size:clamp(15px,4.5vw,22px)}
+
+  /* Barre d'outils fixe en bas */
+  .mobile-toolbar{
+    display:flex;
+    position:fixed;
+    bottom:0;left:0;right:0;
+    background:var(--paper);
+    border-top:2px solid var(--ink);
+    padding:.4rem .75rem;
+    gap:.35rem;
+    z-index:50;
+    box-shadow:0 -2px 12px rgba(0,0,0,.15);
+  }
+  .mob-btn{
+    flex:1;min-height:52px;
+    background:var(--paper2);border:1.5px solid var(--paper3);border-radius:6px;
+    padding:5px 2px;
+    font-family:'DM Sans',sans-serif;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    cursor:pointer;color:var(--ink2);
+    transition:all .12s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mob-btn:active{transform:scale(.92);background:var(--paper3)}
+  .mob-btn.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .mob-btn-icon{font-size:18px;line-height:1}
+  .mob-btn-label{font-size:8px;letter-spacing:.5px;text-transform:uppercase;opacity:.7}
+}
+
+/* --- Petits téléphones (≤420px) --- */
+@media(max-width:420px){
+  .page{padding:0 .5rem 4.75rem}
+
+  /* Header : 3 rangées empilées */
+  .site-header{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto auto;
+    gap:.15rem;padding:.4rem 0;
+  }
+  .header-left{grid-column:1;grid-row:1;text-align:center}
+  .header-center{grid-column:1;grid-row:2;text-align:center}
+  .header-right{
+    grid-column:1;grid-row:3;
+    flex-direction:row;justify-content:center;gap:1rem;
+  }
+  .theme-row{flex-direction:row;align-items:center;gap:5px;margin-bottom:0}
+  .logo{font-size:clamp(22px,6.5vw,30px);letter-spacing:4px}
+  .tagline{display:none}
+
+  /* Panneau gauche en grille 2 colonnes */
+  .left-panel{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:.5rem;
+  }
+  .panel-section{min-width:unset;flex:unset}
+
+  /* Boutons encore plus grands */
+  .action-btn{min-height:44px;font-size:12px;padding:8px 8px;gap:4px}
+  .diff-btn{min-height:40px;font-size:12px;padding:7px 8px}
+
+  /* Numpad : hauteur fixe pour les petits écrans */
+  .num-btn{aspect-ratio:unset;height:50px;font-size:clamp(16px,6vw,24px)}
+}
+
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-thumb{background:var(--paper3);border-radius:99px}

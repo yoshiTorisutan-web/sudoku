@@ -209,6 +209,30 @@
   </div>
 </div>
 
+<!-- BARRE MOBILE -->
+<div class="mobile-toolbar" id="mobile-toolbar">
+  <button class="mob-btn" onclick="newGame()">
+    <span class="mob-btn-icon">🆕</span>
+    <span class="mob-btn-label">Nouveau</span>
+  </button>
+  <button class="mob-btn" id="mob-notes-btn" onclick="toggleNotes()">
+    <span class="mob-btn-icon">✎</span>
+    <span class="mob-btn-label">Notes</span>
+  </button>
+  <button class="mob-btn" onclick="undoMove()">
+    <span class="mob-btn-icon">↩</span>
+    <span class="mob-btn-label">Annuler</span>
+  </button>
+  <button class="mob-btn" onclick="clearCell()">
+    <span class="mob-btn-icon">⌫</span>
+    <span class="mob-btn-label">Effacer</span>
+  </button>
+  <button class="mob-btn" onclick="useHint()">
+    <span class="mob-btn-icon">💡</span>
+    <span class="mob-btn-label">Indice</span>
+  </button>
+</div>
+
 <canvas id="confetti-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:200"></canvas>
 <script src="app.js"></script>
 </body>
